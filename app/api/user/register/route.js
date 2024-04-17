@@ -15,6 +15,10 @@ export const POST = async (request) => {
     // encrypted the password
     const hashedPassword = await hash(password, 10);
 
+    const userExist = User.findOne({ email: email });
+
+    if (userExist) return new Response("Email already exists", { status: 400 })
+
     User.create({
       email,
       firstName,
