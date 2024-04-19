@@ -5,7 +5,7 @@ import nextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 
-const handler = nextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -77,6 +77,8 @@ const handler = nextAuth({
       }
     }
   }
-});
+};
+
+const handler = nextAuth(authOptions);
 
 export { handler as GET, handler as POST };
