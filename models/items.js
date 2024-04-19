@@ -6,7 +6,7 @@ const ItemSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User'
     },
-    item_name: {
+    itemName: {
       type: String,
       require: [true, 'Item name is required']
     },
