@@ -14,13 +14,13 @@ const ItemSchema = new Schema(
       type: String,
       require: [true, 'Description is required']
     },
+    unitPrice: {
+      type: Number,
+      require: [true, 'Unit price is required']
+    },
     quantity: {
       type: Number,
       require: [true, 'Quantity is required']
-    },
-    unit_price: {
-      type: Number,
-      require: [true, 'Unit price is required']
     }
   },
   { timestamps: true }
