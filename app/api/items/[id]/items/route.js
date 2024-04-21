@@ -1,17 +1,16 @@
-import { connectToDb } from "@/lib/mongodb"
-import Item from "@/models/items";
+import Item from '@/models/items';
+import { connectToDb } from '@/lib/mongodb';
 
-
-export const GET = async ( request, { params } ) => {
-  console.log(params)
+export const GET = async (request, { params }) => {
+  console.log(params);
 
   try {
-    await connectToDb(); 
+    await connectToDb();
 
-    const items = await Item.find({ owner: params.id }).populate('owner')
+    const items = await Item.find({ owner: params.id }).populate('owner');
 
-    return new Response(JSON.stringify(items), { status: 200 })
+    return new Response(JSON.stringify(items), { status: 200 });
   } catch (error) {
-    return new Response("Something went wrong", { status: 500 })
+    return new Response('Something went wrong', { status: 500 });
   }
-}
+};

@@ -1,9 +1,9 @@
-import { connectToDb } from '@/lib/mongodb';
-import User from '@/models/user';
 import { compare } from 'bcrypt';
 import nextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
+import User from '@/models/user';
+import { connectToDb } from '@/lib/mongodb';
 
 export const authOptions = {
   providers: [
@@ -21,7 +21,7 @@ export const authOptions = {
           if (!existingUser) return null;
 
           const passwordMatched = await compare(password, existingUser.password);
-          
+
           if (!passwordMatched) return null;
 
           return existingUser;
@@ -32,20 +32,20 @@ export const authOptions = {
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET
     })
   ],
   callbacks: {
     async session({ session }) {
       const sessionUser = await User.findOne({
         email: session.user.email
-      })
-      
+      });
+
       // update the session
       session.user.id = sessionUser._id.toString();
       session.firstName = sessionUser.firstName;
       session.lastName = sessionUser.lastName;
-      
+
       return session;
     },
 
@@ -53,7 +53,7 @@ export const authOptions = {
       if (account?.provider == 'credentials') {
         return true;
       }
-      
+
       try {
         await connectToDb();
 
@@ -61,13 +61,13 @@ export const authOptions = {
         const userExist = await User.findOne({ email: profile.email });
 
         // create new user if user does not exists
-        if(!userExist) {
+        if (!userExist) {
           await User.create({
             email: profile.email,
             image: profile.picture,
             lastName: profile.family_name,
-            firstName: profile.given_name,
-          })
+            firstName: profile.given_name
+          });
         }
 
         return true;
